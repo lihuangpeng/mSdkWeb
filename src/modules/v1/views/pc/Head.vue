@@ -22,8 +22,8 @@
         },
         methods:{
             close:function () {
+                console.log('1111');
                 if(window.parent){
-                    console.log('close');
                     window.parent.postMessage(JSON.stringify({
                         'ac': 'close',
                     }), '*');

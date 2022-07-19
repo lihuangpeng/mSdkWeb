@@ -66,13 +66,11 @@
         mounted: function () {
             window.addEvent(window, 'message', (event) => {
                 if (typeof event.data !== 'string') return false;
-                console.log(event.data);
                 try {
                     var data = JSON.parse(event.data);
                 } catch (e) {
                     return false;
                 }
-                console.log(data);
                 if (data.ac === 'init') {
                     this.show = false;
                     if (!Object.hasOwnProperty.call(data.params, 'app_key')) {
