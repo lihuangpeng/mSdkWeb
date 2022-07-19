@@ -23,6 +23,7 @@
         methods:{
             close:function () {
                 if(window.parent){
+                    console.log('close');
                     window.parent.postMessage(JSON.stringify({
                         'ac': 'close',
                     }), '*');
