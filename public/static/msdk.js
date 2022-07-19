@@ -21,7 +21,7 @@
                     if (scripts[i] && scripts[i].getAttribute("src") && scripts[i].getAttribute("src").indexOf("msdk.js") > -1) {
                         let url = scripts[i].getAttribute("src");
                         let url_info = url.split('//');
-                        this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0];
+                        this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0]+'/sdk';
                         let param = url.substr(url.indexOf("?") + 1).split("&");
                         for (let i = 0; i < param.length; i++) {
                             let data = param[i].split('=');
