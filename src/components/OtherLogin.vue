@@ -26,11 +26,13 @@
                     qq: 1,
                     weibo: 1
                 },
-                sdk_type: 'js',
             }
         },
         created: function () {
-
+            if(this.isWeiXin()){
+                this.open_list.qq = 0;
+                this.open_list.weibo = 0;
+            }
         },
         mounted: function () {
 
@@ -88,6 +90,9 @@
                 } else {
                     window.openWindow(url, 'qqLogin', 500, 400);
                 }
+            },
+            isWeiXin:function () {
+                return /MicroMessenger/i.test(window.navigator.userAgent);
             }
         }
     }
