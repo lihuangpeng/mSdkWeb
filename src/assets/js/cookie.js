@@ -20,7 +20,6 @@ var cookie = (function Cookie() {
             return false;
         },
         delCookie:function (name) {
-            console.log(name);
             document.cookie = name+"=;expires="+(new Date()).toGMTString()+";path=/";
         }
     };
