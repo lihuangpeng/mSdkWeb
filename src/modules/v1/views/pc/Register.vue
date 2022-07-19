@@ -66,10 +66,7 @@
                     data = Aes.decrypt(data, window.msdk_aes_key);
                     data = JSON.parse(data);
                     if (data.code === 200) {
-                        window.parent.postMessage(JSON.stringify({
-                            'ac': 'login',
-                            'params': {access_code: data.data},
-                        }), '*');
+                        window.sdkLogin(data.data);
                     } else {
                         this.disabled = false;
                         this.text = '注册';

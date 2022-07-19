@@ -44,7 +44,7 @@
                 this.getParams();
                 let div = document.createElement('div');
                 div.innerHTML = '<iframe src="' + this.baseURI + '" width="100%" height="100%" frameborder="0" ' +
-                    'scrolling="no" id="' + el + '_iframe" sandbox=" allow-same-origin allow-scripts  allow-popups allow-forms allow-modals allow-top-navigation-by-user-activation"></iframe>';
+                    'scrolling="no" id="' + el + '_iframe" sandbox="allow-same-origin allow-scripts allow-top-navigation allow-popups allow-forms allow-modals"></iframe>';
                 div.setAttribute('id', el);
                 div.style.width = this.getParams('width');
                 div.style.height = this.getParams('height');

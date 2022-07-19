@@ -57,7 +57,7 @@
                 params.callback = window.msdk_callback;
                 let state = Aes.encrypt(params, window.msdk_aes_key);
                 let query_str = 'response_type=code&client_id=' + process.env.VUE_APP_WEIBO_APP_KEY + '&redirect_uri=http://ithp.top/api/social/callback&state=' + state;
-                window.open('https://api.weibo.com/oauth2/authorize?' + query_str, '_blank');
+                window.openWindow('https://api.weibo.com/oauth2/authorize?' + query_str, 'weiboLogin',500,400);
             },
             qqLogin: function () {
                 if(!this.policy.checked){
@@ -74,7 +74,7 @@
                 params.callback = window.msdk_callback;
                 let state = Aes.encrypt(params, window.msdk_aes_key);
                 let query_str = 'response_type=code&client_id=' + process.env.VUE_APP_QQ_APP_ID + '&redirect_uri=' + process.env.VUE_APP_QQ_REDIRECT_URI + '&state=' + state;
-                window.open('https://graph.qq.com/oauth2.0/authorize?' + query_str, '_blank');
+                window.openWindow('https://graph.qq.com/oauth2.0/authorize?' + query_str,'qqLogin',500,400);
             }
         }
     }
