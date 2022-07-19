@@ -6,7 +6,7 @@
         <ForgetPassword v-if="show == 4"></ForgetPassword>
         <BindPhone v-if="show == 5" :policy="policy"></BindPhone>
         <PolicyService v-show="show!=4" ref="policy_service"></PolicyService>
-        <OtherLogin v-if="show == 2 || show == 1" :policy="policy"></OtherLogin>
+        <OtherLogin v-if="show == 2 || show == 1" :policy="policy" type="H5"></OtherLogin>
     </section>
 </template>
 

@@ -7,7 +7,7 @@
             </el-tab-pane>
         </el-tabs>
         <PolicyService ref="policy_service"></PolicyService>
-        <OtherLogin :policy="policy"></OtherLogin>
+        <OtherLogin :policy="policy" type="PC"></OtherLogin>
     </section>
 </template>
 
