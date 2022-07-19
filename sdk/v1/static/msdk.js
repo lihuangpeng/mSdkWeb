@@ -12,6 +12,7 @@
         let el = 'msdk_v1';
         this.storage_key = 'msdk_access_token';
         this.baseURI = '';
+        this.host = '';
         this.init = false;
 
         this.getParams = function (key) {
@@ -21,6 +22,7 @@
                     if (scripts[i] && scripts[i].getAttribute("src") && scripts[i].getAttribute("src").indexOf("msdk.js") > -1) {
                         let url = scripts[i].getAttribute("src");
                         let url_info = url.split('//');
+                        this.host = this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0];
                         this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0]+'/sdk';
                         let param = url.substr(url.indexOf("?") + 1).split("&");
                         for (let i = 0; i < param.length; i++) {
@@ -120,7 +122,8 @@
 
     addEvent(window, 'message', function (event) {
         let origin = event.origin;
-        if (origin !== window.mSDK.baseURI) return false;
+        consol.log(event.data);
+        if (origin !== window.mSDK.host) return false;
         if (typeof event.data !== 'string') return false;
         let data = JSON.parse(event.data);
         if(!Object.hasOwnProperty.call(data,'ac')){
