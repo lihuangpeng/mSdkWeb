@@ -122,7 +122,7 @@
 
     addEvent(window, 'message', function (event) {
         let origin = event.origin;
-        consol.log(event.data);
+        console.log(event.data);
         if (origin !== window.mSDK.host) return false;
         if (typeof event.data !== 'string') return false;
         let data = JSON.parse(event.data);
