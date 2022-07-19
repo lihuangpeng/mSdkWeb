@@ -68,7 +68,7 @@ if(process.env.NODE_ENV === 'production' && encryption){
 }
 module.exports = {
     //静态文件打包后，前缀添加路径
-    publicPath: "/",
+    publicPath: "/sdk",
     //打包目录
     outputDir: "sdk/" + project,
     //打包后静态资源目录,基于打包目录
