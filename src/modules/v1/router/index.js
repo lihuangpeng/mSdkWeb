@@ -11,7 +11,7 @@ if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
 
 const routes = [
     {
-        path: '/', name: platform == 'mobile' ? 'Home' : 'Login', component: function () {
+        path: '/sdk', name: platform == 'mobile' ? 'Home' : 'Login', component: function () {
             if(platform == 'mobile'){
                 return import("../views/"+platform+'/Home.vue')
             }else{
@@ -36,7 +36,7 @@ const routes = [
     }
     },
     {
-        path: '*', redirect: "/"
+        path: '*', redirect: "/sdk"
     }
 ];
 

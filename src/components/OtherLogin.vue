@@ -45,7 +45,6 @@
                 });
             },
             weiboLogin: function () {
-                console.log(this.policy.checked);
                 if (!this.policy.checked) {
                     this.$message({
                         'message': '请阅读并勾选页面底部的协议',

@@ -5,7 +5,7 @@
         </h2>
         <section class="msdk-register-container">
             <PhoneInput ref="phone_input"></PhoneInput>
-            <CodeInput ref="code_input"></CodeInput>
+            <CodeInput ref="code_input" action="phone_register"></CodeInput>
             <PasswordInput ref="password_input"></PasswordInput>
             <Button :clickHandle="clickHandle" btnClass="msdk-bth-major" :text="text"></Button>
         </section>

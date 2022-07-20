@@ -5,12 +5,12 @@
             <section v-if="!show" style="width: 100%;height: 100%;text-align: center;margin-top: 100px;">
                 <i class="el-icon-loading" style="font-size: 30px"></i>
             </section>
-            <section v-if="show == 1" class="msdk-content">
-                <router-view id="view"></router-view>
-            </section>
-            <section v-else-if="show == 2" style="text-align: center;margin-top: 86px;">
+            <section v-else-if="show == -1" style="text-align: center;margin-top: 86px;">
                 <p style="color: red;font-size: 16px;margin-bottom: 10px;">{{error_tips}}</p>
                 <i class="el-icon-refresh-right" style="cursor: pointer" @click="refresh()"></i>
+            </section>
+            <section v-else class="msdk-content">
+                <router-view id="view"></router-view>
             </section>
         </section>
     </section>
@@ -74,12 +74,12 @@
                 if (data.ac === 'init') {
                     this.show = false;
                     if (!Object.hasOwnProperty.call(data.params, 'app_key')) {
-                        this.show = 2;
+                        this.show = -1;
                         this.error_tips = '初始化异常，app_key为空';
                         return false;
                     }
                     if (!Object.hasOwnProperty.call(data, 'ac') || this.allow_message_ac.indexOf(data.ac) < 0) {
-                        this.show = 2;
+                        this.show = -1;
                         this.error_tips = '初始化异常，操作方法错误';
                         return false;
                     }
@@ -96,11 +96,11 @@
                             window.msdk_sub_app_id = Aes.decrypt(app_key, window.msdk_aes_key);
                             this.show = 1;
                         } else {
-                            this.show = 2;
+                            this.show = -1;
                             this.error_tips = data.msg;
                         }
                     }).catch((data) => {
-                        this.show = 2;
+                        this.show = -1;
                         this.error_tips = '请求接口异常';
                     });
                     window.parent.postMessage(JSON.stringify({

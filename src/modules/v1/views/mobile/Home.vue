@@ -23,12 +23,18 @@
             BindPhone: () => import('@ModuleViews/mobile/BindPhone.vue'),
             PolicyService
         },
+        props:{
+            init_show:Number
+        },
         data: function () {
             return {
-                show: 1,
+                show: 0,
                 last_show: 0,
                 policy: {},
             }
+        },
+        created:function () {
+            this.show = this.init_show;
         },
         mounted: function () {
             this.policy = this.$refs.policy_service;
