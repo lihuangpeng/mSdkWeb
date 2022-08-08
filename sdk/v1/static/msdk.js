@@ -12,6 +12,7 @@
         let el = 'msdk_v1';
         this.storage_key = 'msdk_access_token';
         this.baseURI = '';
+        this.host = '';
         this.init = false;
 
         this.getParams = function (key) {
@@ -21,7 +22,8 @@
                     if (scripts[i] && scripts[i].getAttribute("src") && scripts[i].getAttribute("src").indexOf("msdk.js") > -1) {
                         let url = scripts[i].getAttribute("src");
                         let url_info = url.split('//');
-                        this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0];
+                        this.host = this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0];
+                        this.baseURI = url_info[0] + '//' + url_info[1].split('/')[0]+'/sdk';
                         let param = url.substr(url.indexOf("?") + 1).split("&");
                         for (let i = 0; i < param.length; i++) {
                             let data = param[i].split('=');
@@ -42,7 +44,7 @@
                 this.getParams();
                 let div = document.createElement('div');
                 div.innerHTML = '<iframe src="' + this.baseURI + '" width="100%" height="100%" frameborder="0" ' +
-                    'scrolling="no" id="' + el + '_iframe" sandbox=" allow-same-origin allow-scripts  allow-popups allow-forms allow-modals allow-top-navigation-by-user-activation"></iframe>';
+                    'scrolling="no" id="' + el + '_iframe" sandbox="allow-same-origin allow-scripts allow-top-navigation allow-popups allow-forms allow-modals"></iframe>';
                 div.setAttribute('id', el);
                 div.style.width = this.getParams('width');
                 div.style.height = this.getParams('height');
@@ -120,7 +122,7 @@
 
     addEvent(window, 'message', function (event) {
         let origin = event.origin;
-        if (origin !== window.mSDK.baseURI) return false;
+        if (origin !== window.mSDK.host) return false;
         if (typeof event.data !== 'string') return false;
         let data = JSON.parse(event.data);
         if(!Object.hasOwnProperty.call(data,'ac')){

@@ -5,7 +5,7 @@
         </h2>
         <section class="msdk-register-container">
             <PhoneInput ref="phone_input"></PhoneInput>
-            <CodeInput ref="code_input"></CodeInput>
+            <CodeInput ref="code_input" action="phone_register"></CodeInput>
             <PasswordInput ref="password_input"></PasswordInput>
             <Button :clickHandle="clickHandle" btnClass="msdk-bth-major" :text="text"></Button>
         </section>
@@ -65,10 +65,7 @@
                     data = Aes.decrypt(data, window.msdk_aes_key);
                     data = JSON.parse(data);
                     if (data.code === 200) {
-                        window.parent.postMessage(JSON.stringify({
-                            'ac': 'login',
-                            'params': {access_code: data.data},
-                        }), '*');
+                        window.sdkLogin(data.data);
                     } else {
                         this.disabled = false;
                         this.text = '注册';

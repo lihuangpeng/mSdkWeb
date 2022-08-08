@@ -6,7 +6,7 @@
         <ForgetPassword v-if="show == 4"></ForgetPassword>
         <BindPhone v-if="show == 5" :policy="policy"></BindPhone>
         <PolicyService v-show="show!=4" ref="policy_service"></PolicyService>
-        <OtherLogin v-if="show == 2 || show == 1" :policy="policy"></OtherLogin>
+        <OtherLogin v-if="show == 2 || show == 1" :policy="policy" type="H5"></OtherLogin>
     </section>
 </template>
 
@@ -23,12 +23,18 @@
             BindPhone: () => import('@ModuleViews/mobile/BindPhone.vue'),
             PolicyService
         },
+        props:{
+            init_show:Number
+        },
         data: function () {
             return {
-                show: 1,
+                show: 0,
                 last_show: 0,
                 policy: {},
             }
+        },
+        created:function () {
+            this.show = this.init_show;
         },
         mounted: function () {
             this.policy = this.$refs.policy_service;

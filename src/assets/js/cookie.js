@@ -5,8 +5,8 @@ var cookie = (function Cookie() {
                 expire = 60 * 60 * 24 * 30 * 12; //默认一年
             }
             var date = new Date();
-            data.setTime(date.getTime() + expire * 1000);
-            document.cookie = name + " = " + escape(value) + ";expires=" + date.toGMTString();
+            date.setTime(date.getTime() + expire * 1000);
+            document.cookie = name + " = " + escape(value) + ";expires=" + date.toGMTString()+";path=/";
         },
         getCookie: function (name){
             var ca = document.cookie.split(';');
@@ -20,7 +20,7 @@ var cookie = (function Cookie() {
             return false;
         },
         delCookie:function (name) {
-            document.cookie = name+"=;expires="+(new Date()).toGMTString();
+            document.cookie = name+"=;expires="+(new Date()).toGMTString()+";path=/";
         }
     };
 })();
