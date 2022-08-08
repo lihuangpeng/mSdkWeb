@@ -4,7 +4,7 @@
             <span>绑定手机号</span>
         </section>
         <section style="font-size: 12px;text-align: center;margin-bottom: 20px;">
-            为了你的账户安全，请绑定一个手机号(请确认是否是你本人操作)
+            为了你的账户安全，请绑定一个手机号(如果你未进行第三方登录，请勿绑定手机)
         </section>
         <section class="msdk-bind-phone-container">
             <PhoneInput ref="phone_input"></PhoneInput>
