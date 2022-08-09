@@ -10,6 +10,7 @@
 </template>
 <script>
     import Aes from "@CommonAssets/js/encrypt/aes.js";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: "OtherLogin",
         props: {
@@ -56,7 +57,8 @@
                 params.login_type = 4;
                 params.system_type = this.type;
                 params.callback = window.msdk_callback;
-                let state = Aes.encrypt(params, window.msdk_aes_key);
+                let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                let state = Aes.encrypt(params, aes_key);
                 this.$cookie.setCookie('state',state,0);
                 let query_str = 'response_type=code&client_id=' + process.env.VUE_APP_WEIBO_APP_KEY + '&redirect_uri=http://ithp.top/api/social/callback&state=' + state;
                 let url = 'https://api.weibo.com/oauth2/authorize?' + query_str;
@@ -81,7 +83,8 @@
                 params.login_type = 2;
                 params.system_type = this.type;
                 params.callback = window.msdk_callback;
-                let state = Aes.encrypt(params, window.msdk_aes_key);
+                let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                let state = Aes.encrypt(params, aes_key);
                 this.$cookie.setCookie('state',state,0);
                 let query_str = 'response_type=code&client_id=' + process.env.VUE_APP_QQ_APP_ID + '&redirect_uri=' + process.env.VUE_APP_QQ_REDIRECT_URI + '&state=' + state;
                 let url = 'https://graph.qq.com/oauth2.0/authorize?' + query_str;
