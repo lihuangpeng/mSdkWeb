@@ -10,22 +10,21 @@ axios.defaults.timeout = 3000;
 
 //请求拦截器,能拦截请求主体信息
 axios.defaults.transformRequest = function (data, request) {
-    let is_encrypt = false;
     data.request_time= Math.floor((new Date()).getTime()/1000);
-    const aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+    var aes_key = '';
     if(!Object.hasOwnProperty.call(data,'public_key')){
         data.app_id = window.msdk_app_id;
         data.sub_app_id = window.msdk_sub_app_id;
+        aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
         let sign_key = Aes.decrypt(window.msdk_sign_key,aes_key);
         data.sign = window.getSign(data,sign_key);
-        is_encrypt = true;
     }else{
         data.sign = window.getSign(data,process.env.VUE_APP_COMMON_SIGN_KEY);
     }
     if (typeof data === 'object') {
         data = qs.stringify(data);
     }
-    if(is_encrypt){
+    if(aes_key){
         data = Aes.encrypt(data,aes_key);
         request['Accept-Encrypt-Type'] = 'aes';
     }
