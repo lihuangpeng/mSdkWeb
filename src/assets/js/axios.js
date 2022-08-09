@@ -1,6 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 import Aes from "./encrypt/aes";
+import Rsa from "./encrypt/rsa";
+import Config from "@ModuleAssets/js/config.js";
 
 axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL;
 axios.defaults.headers['Content-Type'] = "application/x-www-form-urlencoded;charset=utf-8";
@@ -10,10 +12,11 @@ axios.defaults.timeout = 3000;
 axios.defaults.transformRequest = function (data, request) {
     let is_encrypt = false;
     data.request_time= Math.floor((new Date()).getTime()/1000);
+    const aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
     if(!Object.hasOwnProperty.call(data,'public_key')){
         data.app_id = window.msdk_app_id;
         data.sub_app_id = window.msdk_sub_app_id;
-        let sign_key = Aes.decrypt(window.msdk_sign_key,window.msdk_aes_key);
+        let sign_key = Aes.decrypt(window.msdk_sign_key,aes_key);
         data.sign = window.getSign(data,sign_key);
         is_encrypt = true;
     }else{
@@ -23,7 +26,7 @@ axios.defaults.transformRequest = function (data, request) {
         data = qs.stringify(data);
     }
     if(is_encrypt){
-        data = Aes.encrypt(data,window.msdk_aes_key);
+        data = Aes.encrypt(data,aes_key);
         request['Accept-Encrypt-Type'] = 'aes';
     }
     return data;

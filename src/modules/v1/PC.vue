@@ -21,6 +21,7 @@
     import App from "@CommonAssets/js/api/app.js";
     import Rsa from "@CommonAssets/js/encrypt/rsa.js";
     import Aes from "@CommonAssets/js/encrypt/aes.js";
+    import Config from "@ModuleAssets/js/config.js";
 
     export default{
         name: "PC",
@@ -89,11 +90,13 @@
                     App.init(data.params.app_key, Rsa.PUBLIC).then((data) => {
                         data = Rsa.decrypt(data);
                         if (data.code === 200) {
-                            window.msdk_aes_key = data['data']['secret_key'];
-                            window.msdk_sign_key = Aes.encrypt(data['data']['sign_key'], window.msdk_aes_key);
+                            let secret_key = data['data']['secret_key'];
+                            let sign_key = data['data']['sign_key'];
+                            window.msdk_aes_key = Aes.encrypt(secret_key,Config.aes_key);
+                            window.msdk_sign_key = Aes.encrypt(sign_key, secret_key);
                             window.msdk_app_id = data['data']['app_id'];
                             window.msdk_callback = callback;
-                            window.msdk_sub_app_id = Aes.decrypt(app_key, window.msdk_aes_key);
+                            window.msdk_sub_app_id = Aes.decrypt(app_key, secret_key);
                             this.show = 1;
                         } else {
                             this.show = -1;
