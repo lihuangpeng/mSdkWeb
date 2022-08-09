@@ -11,6 +11,7 @@
     import NormalInput from "@CommonComponents/NormalInput.vue";
     import User from "@CommonAssets/js/api/user";
     import Aes from "@CommonAssets/js/encrypt/aes.js";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: "CodeInput",
         components: {
@@ -45,7 +46,8 @@
                 let phone_ref = this.$parent.$refs[this.bind_phone_input];
                 User.sendSmsCode(phone_ref.areaCode, phone, this.action).then((data) => {
                     //请求验证码
-                    data = Aes.decrypt(data, window.msdk_aes_key);
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
                     data = JSON.parse(data);
                     if (data.code === 200) {
                         let obj = this.$refs['msdk-code-input-wrapper'].getElementsByTagName('a')[0];

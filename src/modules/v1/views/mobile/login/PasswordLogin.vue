@@ -22,6 +22,7 @@
     import Button from "@CommonComponents/Button.vue";
     import User from "@CommonAssets/js/api/user.js";
     import Aes from "@CommonAssets/js/encrypt/aes.js";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: "PasswordLogin",
         components: {
@@ -62,7 +63,8 @@
                 this.disabled = true;
                 this.text = '登录中...';
                 User.phonePasswordLogin(this.$refs.phone_input.areaCode, check_phone, check_password).then((data) => {
-                    data = Aes.decrypt(data, window.msdk_aes_key);
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
                     data = JSON.parse(data);
                     if (data.code === 200) {
                         window.sdkLogin(data.data);

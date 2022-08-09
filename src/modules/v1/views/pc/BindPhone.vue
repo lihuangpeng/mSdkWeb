@@ -22,6 +22,7 @@
     import CodeInput from "@CommonComponents/CodeInput.vue";
     import Aes from "@CommonAssets/js/encrypt/aes";
     import User from "@CommonAssets/js/api/user";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: 'BindPhone',
         components: {
@@ -69,7 +70,8 @@
                 this.disabled = true;
                 this.text = '绑定中...';
                 User.bindPhone(this.token,this.$refs.phone_input.areaCode,check_phone,check_code).then((data)=>{
-                    data = Aes.decrypt(data, window.msdk_aes_key);
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
                     data = JSON.parse(data);
                     if(data.code === 200){
                         window.parent.postMessage(JSON.stringify({

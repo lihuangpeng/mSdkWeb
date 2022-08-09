@@ -21,6 +21,7 @@
     import PolicyService from "@CommonComponents/PolicyService.vue";
     import User from "@CommonAssets/js/api/user";
     import Aes from "@CommonAssets/js/encrypt/aes";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: 'Register',
         components: {
@@ -63,7 +64,8 @@
                 this.disabled = true;
                 this.text = '注册中...';
                 User.phoneRegister(this.$refs.phone_input.areaCode, check_phone, check_code, check_password).then((data) => {
-                    data = Aes.decrypt(data, window.msdk_aes_key);
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
                     data = JSON.parse(data);
                     if (data.code === 200) {
                         window.sdkLogin(data.data);

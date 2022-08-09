@@ -14,6 +14,7 @@
 <script>
     import PolicyService from "@CommonComponents/PolicyService.vue";
     import OtherLogin from "@CommonComponents/OtherLogin.vue";
+    import Config from "@ModuleAssets/js/config.js";
     export default {
         name: "Login",
         components: {

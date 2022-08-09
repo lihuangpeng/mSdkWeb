@@ -7,7 +7,7 @@
         <section class="msdk-forget-password-container">
             <section v-show="show == 1" class="msdk-forget-password-yanzheng-container">
                 <PhoneInput ref="phone_input"></PhoneInput>
-                <CodeInput ref="code_input"></CodeInput>
+                <CodeInput ref="code_input" action="forget_password"></CodeInput>
                 <Button :clickHandle="yangZheng" btnClass="msdk-bth-major" text="确认验证"></Button>
             </section>
             <section v-show="show == 2" class="msdk-forget-password-update-container">
@@ -24,6 +24,10 @@
     import PasswordInput from "@CommonComponents/PasswordInput.vue";
     import Button from "@CommonComponents/Button.vue";
     import CodeInput from "@CommonComponents/CodeInput.vue";
+    import Aes from "@CommonAssets/js/encrypt/aes";
+    import Verify from "@CommonAssets/js/api/verify";
+    import User from "@CommonAssets/js/api/user";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: 'ForgetPassword',
         components: {
@@ -34,7 +38,9 @@
         },
         data: function () {
             return {
-                show : 1,
+                show: 1,
+                token: '',
+                timer_id : 0
             }
         },
         methods: {
@@ -44,25 +50,70 @@
                     return false;
                 }
                 let check_code = this.$refs.code_input.checkCode();
-                if(!check_code){
+                if (!check_code) {
                     return false;
                 }
-                //验证验证码...
-                this.show = 2;
+                if(this.token){
+                    return true;
+                }
+                Verify.phone(this.$refs.phone_input.areaCode, check_phone, check_code).then((data) => {
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
+                    data = JSON.parse(data);
+                    if (data.code == 200) {
+                        //验证验证码...
+                        this.$message({
+                            'message': data.msg,
+                            'type': 'success'
+                        });
+                        this.token = data.data;
+                        this.timer_id = setTimeout(() => {
+                            this.token = '';
+                        },1000 * 60);
+                        this.show = 2;
+                    } else {
+                        this.$message.error(data.msg);
+                    }
+                }).catch(()=>{
+                    this.$message.error('请求接口异常');
+                });
             },
-            updatePassword:function () {
-                let check_password = this.$refs.password_input.checkPassword();
-                if(!check_password){
+            updatePassword: function () {
+                if(!this.token){
+                    this.$message({
+                        'message': '请先进行安全验证',
+                        'type': 'warning'
+                    });
+                    this.show = 1;
                     return false;
                 }
-                if(this.$refs.repeat_password_input.$refs['password_normal_input'].inputValue !== check_password){
+                let check_password = this.$refs.password_input.checkPassword();
+                if (!check_password) {
+                    return false;
+                }
+                if (this.$refs.repeat_password_input.$refs['password_normal_input'].inputValue !== check_password) {
                     this.$refs.password_input.$refs['msdk-password-input-wrapper'].querySelector('.msdk-password-input-tips').innerHTML = '输入密码不一致';
                     return false;
                 }
-
-                //修改密码,返回登录界面...
-                this.$parent.show = 1;
-                this.$parent.last_show = 0;
+                //修改密码,返回登录界面
+                User.forgetPassword(this.token,check_password,this.$refs.repeat_password_input.$refs['password_normal_input'].inputValue).then((data)=>{
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
+                    data = JSON.parse(data);
+                    if (data.code == 200) {
+                        this.$message({
+                            'message': data.msg,
+                            'type': 'success'
+                        });
+                        clearTimeout(this.timer_id);
+                        this.token = '';
+                        this.$router.push('/');
+                    } else {
+                        this.$message.error(data.msg);
+                    }
+                }).catch(()=>{
+                    this.$message.error('请求接口异常');
+                });
             },
         }
     }

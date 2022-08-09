@@ -28,6 +28,7 @@
     import Aes from "@CommonAssets/js/encrypt/aes";
     import Verify from "@CommonAssets/js/api/verify";
     import User from "@CommonAssets/js/api/user";
+    import Config from "@ModuleAssets/js/config.js";
     export default{
         name: 'ForgetPassword',
         components: {
@@ -57,7 +58,8 @@
                     return true;
                 }
                 Verify.phone(this.$refs.phone_input.areaCode, check_phone, check_code).then((data) => {
-                    data = Aes.decrypt(data, window.msdk_aes_key);
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
                     data = JSON.parse(data);
                     if (data.code == 200) {
                         //验证验证码...
@@ -96,7 +98,8 @@
                 }
                 //修改密码,返回登录界面
                 User.forgetPassword(this.token,check_password,this.$refs.repeat_password_input.$refs['password_normal_input'].inputValue).then((data)=>{
-                    data = Aes.decrypt(data, window.msdk_aes_key);
+                    let aes_key = Aes.decrypt(window.msdk_aes_key,Config.aes_key);
+                    data = Aes.decrypt(data, aes_key);
                     data = JSON.parse(data);
                     if (data.code == 200) {
                         this.$message({
